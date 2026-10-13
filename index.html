@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090909">
+<title>ISHANT X PANEL</title>
+<style>
+:root{--red:#ff2338;--bg:#080808;--panel:#141414;--muted:#aaa}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#301015 0,#080808 45%);color:#fff;font-family:Arial,Helvetica,sans-serif;min-height:100vh}
+button,input{font:inherit}
+.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px}
+.card{width:min(100%,430px);background:rgba(18,18,18,.96);border:1px solid #492027;border-radius:22px;padding:28px;box-shadow:0 18px 60px #0009;text-align:center}
+.logo{font-size:clamp(26px,7vw,36px);font-weight:900;letter-spacing:1px;margin:0 0 8px}
+.logo span{color:var(--red)}
+.subtitle{color:var(--muted);margin:0 0 24px;line-height:1.5}
+input{width:100%;padding:15px;border-radius:12px;border:1px solid #444;background:#080808;color:white;outline:none;margin:8px 0 12px}
+input:focus{border-color:var(--red)}
+.btn{width:100%;border:0;border-radius:12px;padding:14px 16px;background:var(--red);color:#fff;font-weight:800;cursor:pointer}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.error{min-height:20px;color:#ff6877;font-size:14px;margin:8px 0 0}
+.hidden{display:none!important}
+.small{font-size:12px;color:#888;line-height:1.5;margin-top:18px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 5%;border-bottom:1px solid #282828;background:#0b0b0bee;position:sticky;top:0}
+.topbar .logo{font-size:21px;margin:0}
+.topbar button{width:auto;padding:10px 14px}
+main{width:min(1100px,92%);margin:28px auto 60px}
+.hero{background:linear-gradient(120deg,#241014,#141414 65%);border:1px solid #492027;border-radius:20px;padding:26px;margin-bottom:22px}
+.hero h1{margin:0 0 8px;font-size:clamp(25px,5vw,38px)}
+.hero p{color:#bbb;line-height:1.5}
+.search{max-width:520px;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.item{background:var(--panel);border:1px solid #292929;border-radius:16px;padding:18px}
+.item h3{margin:0 0 8px;overflow-wrap:anywhere}
+.item p{color:#aaa;line-height:1.45;overflow-wrap:anywhere}
+.tag{display:inline-block;color:#ff7c88;background:#321116;border-radius:20px;padding:5px 9px;font-size:12px;margin-bottom:10px}
+.item a{display:block;text-align:center;text-decoration:none;margin-top:12px}
+.section-title{margin:28px 0 14px}
+.adminbox{background:#141414;border:1px solid #492027;border-radius:16px;padding:18px;margin:20px 0}
+.adminbox form{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.adminbox input{margin:0}
+.adminbox .btn{grid-column:1/-1}
+.notice{color:#aaa;font-size:13px;line-height:1.5}
+footer{text-align:center;color:#777;padding:28px 10px}
+</style>
+</head>
+<body>
+<section id="loginScreen" class="screen">
+  <div class="card">
+    <p class="logo">ISHANT <span>X PANEL</span></p>
+    <p class="subtitle">Apps • Games • APK/XAPK • Files</p>
+    <form id="loginForm">
+      <input id="sitePassword" type="password" placeholder="Enter website password" autocomplete="current-password" required>
+      <button class="btn" type="submit">UNLOCK WEBSITE</button>
+      <p id="loginError" class="error" aria-live="polite"></p>
+    </form>
+    <p class="small">Created by Ishant</p>
+  </div>
+</section>
+
+<section id="channelScreen" class="screen hidden">
+  <div class="card">
+    <p class="logo">ONE QUICK <span>STEP</span></p>
+    <p class="subtitle">Please visit the official YouTube channel. The Continue button will unlock in <strong id="countdown">15</strong> seconds.</p>
+    <a class="btn" style="display:block;text-decoration:none" href="https://youtube.com/@peakatprime?si=Y2Z2Bw2PeW7s5vMx" target="_blank" rel="noopener noreferrer">VISIT YOUTUBE CHANNEL ↗</a>
+    <div style="height:12px"></div>
+    <button id="continueBtn" class="btn" disabled>CONTINUE (15s)</button>
+    <p class="small">After the timer ends, tap Continue to open the download page.</p>
+  </div>
+</section>
+
+<section id="websiteScreen" class="hidden">
+  <header class="topbar">
+    <p class="logo">ISHANT <span>X PANEL</span></p>
+    <button id="logoutBtn" class="btn">LOCK</button>
+  </header>
+  <main>
+    <div class="hero">
+      <h1>Apps. Games. Files.</h1>
+      <p>Find the download you need. Only download files from sources you trust.</p>
+      <input id="searchInput" class="search" type="search" placeholder="Search apps, games or files..." aria-label="Search downloads">
+    </div>
+    <h2 class="section-title">📥 Available Downloads</h2>
+    <div id="downloadGrid" class="grid"></div>
+    <section id="adminArea" class="adminbox hidden">
+      <h2>⚙️ Admin Panel</h2>
+      <p class="notice">Demo admin panel: items are saved only in this browser. For a public website, use server-side authentication and a database; a password embedded in a static HTML file is not secure.</p>
+      <form id="adminForm">
+        <input id="itemName" placeholder="App / game / file name" required maxlength="80">
+        <input id="itemCategory" placeholder="Category (Apps, Games, APK/XAPK, Files)" required maxlength="30">
+        <input id="itemDescription" placeholder="Short description" maxlength="180">
+        <input id="itemUrl" type="url" placeholder="https:// download link" required>
+        <button class="btn" type="submit">ADD DOWNLOAD</button>
+      </form>
+      <p class="notice">Demo admin access: press the Admin button and enter the admin password. This is not secure authentication for a public site.</p>
+    </section>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px">
+      <button id="adminToggle" class="btn" style="width:auto">ADMIN</button>
+    </div>
+  </main>
+  <footer>ISHANT X PANEL • Created by Ishant</footer>
+</section>
+<script>
+/*
+  DEMO ONLY: The password is visible to anyone who inspects this source.
+  Do not use this static page to protect private data or as a secure admin system.
+*/
+const SITE_PASSWORD = "ISHANTXXX";
+const ADMIN_PASSWORD = "ADMIN-CHANGE-ME";
+const CHANNEL_URL = "https://youtube.com/@peakatprime?si=Y2Z2Bw2PeW7s5vMx";
+const $ = id => document.getElementById(id);
+const screens = ["loginScreen","channelScreen","websiteScreen"];
+function showScreen(id){screens.forEach(s=>$(s).classList.toggle("hidden",s!==id));}
+$("loginForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  if($("sitePassword").value === SITE_PASSWORD){
+    $("loginError").textContent="";
+    $("sitePassword").value="";
+    showScreen("channelScreen");
+    startTimer();
+  } else {$("loginError").textContent="Incorrect password. Please try again.";}
+});
+let timerId;
+function startTimer(){
+  clearInterval(timerId);
+  let remaining=15;
+  $("countdown").textContent=remaining;
+  $("continueBtn").disabled=true;
+  $("continueBtn").textContent=`CONTINUE (${remaining}s)`;
+  timerId=setInterval(()=>{
+    remaining--;
+    $("countdown").textContent=remaining;
+    $("continueBtn").textContent=remaining>0?`CONTINUE (${remaining}s)`:"CONTINUE";
+    if(remaining<=0){clearInterval(timerId);$("continueBtn").disabled=false;}
+  },1000);
+}
+$("continueBtn").addEventListener("click",()=>{if(!$("continueBtn").disabled)showScreen("websiteScreen");});
+$("logoutBtn").addEventListener("click",()=>{showScreen("loginScreen");$("adminArea").classList.add("hidden");});
+let items = [];
+try{items=JSON.parse(localStorage.getItem("ishantDownloads")||"[]");}catch(e){items=[];}
+function safeUrl(value){try{const u=new URL(value);return ["http:","https:"].includes(u.protocol)?u.href:null;}catch(e){return null;}}
+function renderItems(){
+  const query=$("searchInput").value.trim().toLowerCase();
+  const grid=$("downloadGrid");grid.innerHTML="";
+  const filtered=items.filter(x=>(x.name+" "+x.category+" "+x.description).toLowerCase().includes(query));
+  if(!filtered.length){grid.innerHTML='<div class="item"><h3>No downloads yet</h3><p>Use the Admin panel to add your first app, game, or file link.</p></div>';return;}
+  filtered.forEach((item,index)=>{
+    const card=document.createElement("article");card.className="item";
+    const tag=document.createElement("span");tag.className="tag";tag.textContent=item.category;
+    const title=document.createElement("h3");title.textContent=item.name;
+    const desc=document.createElement("p");desc.textContent=item.description||"Download link";
+    card.append(tag,title,desc);
+    const url=safeUrl(item.url);
+    if(url){const a=document.createElement("a");a.className="btn";a.href=url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="DOWNLOAD ↗";card.append(a);}
+    const del=document.createElement("button");del.className="btn";del.style.marginTop="8px";del.style.background="#333";del.textContent="DELETE ITEM";del.addEventListener("click",()=>{if(prompt("Enter admin password to delete this item:")===ADMIN_PASSWORD){items.splice(index,1);saveItems();}});card.append(del);
+    grid.append(card);
+  });
+}
+function saveItems(){localStorage.setItem("ishantDownloads",JSON.stringify(items));renderItems();}
+$("searchInput").addEventListener("input",renderItems);
+$("adminToggle").addEventListener("click",()=>{
+  if($("adminArea").classList.contains("hidden")){
+    if(prompt("Admin password:")===ADMIN_PASSWORD){$("adminArea").classList.remove("hidden");}
+    else alert("Incorrect admin password.");
+  }else $("adminArea").classList.add("hidden");
+});
+$("adminForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const url=safeUrl($("itemUrl").value.trim());
+  if(!url){alert("Please enter a valid http or https download URL.");return;}
+  items.unshift({name:$("itemName").value.trim(),category:$("itemCategory").value.trim(),description:$("itemDescription").value.trim(),url});
+  saveItems();$("adminForm").reset();
+});
+renderItems();
+</script>
+</body>
+</html>
